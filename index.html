@@ -151,8 +151,8 @@ footer a{color:var(--muted);text-decoration:underline}
     <div class="links">
       <a href="#abstract">Abstract</a>
       <a href="#dilution">Semantic Dilution</a>
-      <a href="#dear">DEAR</a>
       <a href="#method">Method</a>
+      <a href="#dear">DEAR</a>
       <a href="#results">Results</a>
       <a href="#bibtex">BibTeX</a>
     </div>
@@ -179,7 +179,7 @@ footer a{color:var(--muted);text-decoration:underline}
     <div class="note">*Equal contribution &nbsp;&middot;&nbsp; &dagger;Corresponding author</div>
 
     <div class="buttons">
-      <a class="btn" href="static/pdfs/SAGE_paper.pdf">
+      <a class="btn" href="https://arxiv.org/abs/2609.04255">
         <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM8 12h8v1.6H8V12zm0 3.4h8V17H8v-1.6z"/></svg>
         Paper
       </a>
@@ -306,7 +306,65 @@ footer a{color:var(--muted);text-decoration:underline}
   </div>
 </section>
 
-<section id="dear" class="alt">
+<section id="method" class="alt">
+  <div class="wrap">
+    <div class="section-kicker">The method</div>
+    <h2>SAGE: Semantic Attribute Graph for Entity retrieval</h2>
+    <p class="lead">Five modules, all built on frozen pretrained models &mdash; the entire pipeline is
+      <b>training-free</b>.</p>
+
+    <figure>
+      <img src="static/images/method.png" alt="Overview of the SAGE pipeline: attribute parsing, semantic captioning, hierarchical graph construction, retrieval planner, subgraph augmentation">
+      <figcaption><b>Overview of SAGE.</b> The pipeline (i) parses dense document images into attribute regions,
+        (ii) generates semantic captions for image regions, (iii) constructs a hierarchical entity&ndash;attribute graph,
+        (iv) retrieves query-relevant subgraphs through iterative planning, and (v) generates answers from structured
+        multimodal evidence.</figcaption>
+    </figure>
+
+    <div class="cards three">
+      <div class="card">
+        <div class="n">Module 1</div><h4>Attribute Parser</h4>
+        <p>An off-the-shelf OCR layout parser (PaddleOCR) decomposes each image into fine-grained regions, yielding
+          bounding-box&ndash;text pairs plus a visual crop per region for non-textual signals such as icons and diagrams.</p>
+      </div>
+      <div class="card">
+        <div class="n">Module 2</div><h4>Attribute Captioner</h4>
+        <p>Image regions carry no OCR text, so a frozen VLM generates a semantic caption describing what each visual
+          crop represents &mdash; producing an enriched attribute record (box, crop, text, caption).</p>
+      </div>
+      <div class="card">
+        <div class="n">Module 3</div><h4>Hierarchical Graph Constructor</h4>
+        <p>A frozen LLM groups coherent records into attribute-level leaf nodes under entity-level root nodes. Each leaf
+          is embedded by jointly encoding its composite image with its composed text and captions.</p>
+      </div>
+      <div class="card">
+        <div class="n">Module 4</div><h4>Retrieval Planner</h4>
+        <p>Two-stage coarse-to-fine search: top-<i>k<sub>r</sub></i> root nodes first, then root-conditioned attribute
+          retrieval, reranked by a weighted root/attribute score &mdash; refined iteratively against a query checklist.</p>
+      </div>
+      <div class="card">
+        <div class="n">Module 5</div><h4>Subgraph Augmentor</h4>
+        <p>The retrieved subgraph is serialized into an ordered multimodal context &mdash; entities with their child
+          attributes and visual crops &mdash; and handed to a frozen VLM for grounded answer generation.</p>
+      </div>
+    </div>
+
+    <div class="callout good">
+      <p><span class="k">Key idea.</span> Instead of embedding whole pages or layout-agnostic patches, SAGE embeds only
+        <b>semantically coherent attribute units</b>, and anchors them to the entity they belong to. Root-level anchoring
+        reduces interference from irrelevant regions, while checklist-driven refinement ensures every item the query
+        asks for is actually covered.</p>
+    </div>
+
+    <h3 style="text-align:center">Iterative checklist refinement</h3>
+    <p class="lead">A frozen LLM parses the query <i>Q</i> into a required-item checklist <i>C</i>(<i>Q</i>) and verifies
+      whether each item is satisfied by the current retrieval set. If any item remains uncovered, the planner reformulates
+      the query with the missing items and retrieves again &mdash; until the checklist is covered or a maximum iteration
+      count is reached.</p>
+  </div>
+</section>
+
+<section id="dear">
   <div class="wrap">
     <div class="section-kicker">The benchmark</div>
     <h2>DEAR: Dense Entity-Attribute Retrieval</h2>
@@ -375,64 +433,6 @@ footer a{color:var(--muted);text-decoration:underline}
       </table>
     </div>
     <p class="tbl-note">Statistics of the DEAR benchmark.</p>
-  </div>
-</section>
-
-<section id="method">
-  <div class="wrap">
-    <div class="section-kicker">The method</div>
-    <h2>SAGE: Semantic Attribute Graph for Entity retrieval</h2>
-    <p class="lead">Five modules, all built on frozen pretrained models &mdash; the entire pipeline is
-      <b>training-free</b>.</p>
-
-    <figure>
-      <img src="static/images/method.png" alt="Overview of the SAGE pipeline: attribute parsing, semantic captioning, hierarchical graph construction, retrieval planner, subgraph augmentation">
-      <figcaption><b>Overview of SAGE.</b> The pipeline (i) parses dense document images into attribute regions,
-        (ii) generates semantic captions for image regions, (iii) constructs a hierarchical entity&ndash;attribute graph,
-        (iv) retrieves query-relevant subgraphs through iterative planning, and (v) generates answers from structured
-        multimodal evidence.</figcaption>
-    </figure>
-
-    <div class="cards three">
-      <div class="card">
-        <div class="n">Module 1</div><h4>Attribute Parser</h4>
-        <p>An off-the-shelf OCR layout parser (PaddleOCR) decomposes each image into fine-grained regions, yielding
-          bounding-box&ndash;text pairs plus a visual crop per region for non-textual signals such as icons and diagrams.</p>
-      </div>
-      <div class="card">
-        <div class="n">Module 2</div><h4>Attribute Captioner</h4>
-        <p>Image regions carry no OCR text, so a frozen VLM generates a semantic caption describing what each visual
-          crop represents &mdash; producing an enriched attribute record (box, crop, text, caption).</p>
-      </div>
-      <div class="card">
-        <div class="n">Module 3</div><h4>Hierarchical Graph Constructor</h4>
-        <p>A frozen LLM groups coherent records into attribute-level leaf nodes under entity-level root nodes. Each leaf
-          is embedded by jointly encoding its composite image with its composed text and captions.</p>
-      </div>
-      <div class="card">
-        <div class="n">Module 4</div><h4>Retrieval Planner</h4>
-        <p>Two-stage coarse-to-fine search: top-<i>k<sub>r</sub></i> root nodes first, then root-conditioned attribute
-          retrieval, reranked by a weighted root/attribute score &mdash; refined iteratively against a query checklist.</p>
-      </div>
-      <div class="card">
-        <div class="n">Module 5</div><h4>Subgraph Augmentor</h4>
-        <p>The retrieved subgraph is serialized into an ordered multimodal context &mdash; entities with their child
-          attributes and visual crops &mdash; and handed to a frozen VLM for grounded answer generation.</p>
-      </div>
-    </div>
-
-    <div class="callout good">
-      <p><span class="k">Key idea.</span> Instead of embedding whole pages or layout-agnostic patches, SAGE embeds only
-        <b>semantically coherent attribute units</b>, and anchors them to the entity they belong to. Root-level anchoring
-        reduces interference from irrelevant regions, while checklist-driven refinement ensures every item the query
-        asks for is actually covered.</p>
-    </div>
-
-    <h3 style="text-align:center">Iterative checklist refinement</h3>
-    <p class="lead">A frozen LLM parses the query <i>Q</i> into a required-item checklist <i>C</i>(<i>Q</i>) and verifies
-      whether each item is satisfied by the current retrieval set. If any item remains uncovered, the planner reformulates
-      the query with the missing items and retrieves again &mdash; until the checklist is covered or a maximum iteration
-      count is reached.</p>
   </div>
 </section>
 
