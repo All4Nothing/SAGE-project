@@ -115,13 +115,12 @@ figcaption b{color:var(--fg)}
   border:1px solid var(--line);border-radius:var(--radius);background:#fff}
 table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}
 caption{caption-side:bottom;font-size:14.5px;color:var(--muted);padding:14px 8px 0;text-align:center}
-th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
-th:first-child,td:first-child{text-align:left}
+th,td{padding:10px 14px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
 thead th{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;
   background:var(--bg-alt);border-bottom:1px solid var(--line)}
 tbody tr:last-child td{border-bottom:none}
 tr.group td{background:var(--bg-alt);font-size:12.5px;font-weight:700;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--muted);text-align:left}
+  text-transform:uppercase;color:var(--muted);text-align:center}
 tr.ours{background:var(--accent-soft)}
 tr.ours td{font-weight:600}
 td.best{font-weight:700}
@@ -162,7 +161,7 @@ footer a{color:var(--muted);text-decoration:underline}
 
 <header>
   <div class="wrap">
-    <span class="venue">EMNLP 2026 &middot; Training-Free</span>
+    <span class="venue">EMNLP 2026 Main</span>
     <h1 class="title"><span class="sage">SAGE</span>: Semantic Attribute Graphs<br>for Multi-Entity Visual Retrieval</h1>
     <p class="subtitle">Turning visually dense document images into entity&ndash;attribute graphs, so fine-grained evidence survives retrieval.</p>
 
@@ -321,34 +320,6 @@ footer a{color:var(--muted);text-decoration:underline}
       <div class="stat"><div class="v">4</div><div class="l">Question types (A&ndash;D)</div></div>
       <div class="stat"><div class="v">8</div><div class="l">Product categories</div></div>
     </div>
-
-    <h3 style="text-align:center">Why another benchmark?</h3>
-    <p class="lead">Existing document QA benchmarks evaluate retrieval at the page or document level, and multi-entity
-      benchmarks emphasize text-based reasoning. None simultaneously covers visually grounded multi-entity retrieval,
-      dense image inputs, and comparison-oriented reasoning.</p>
-
-    <div class="table-scroll" style="max-width:760px;margin-left:auto;margin-right:auto">
-      <table style="min-width:520px">
-        <thead>
-          <tr>
-            <th rowspan="2">Benchmark</th>
-            <th colspan="2">Hops</th>
-            <th rowspan="2">Dense-<br>Attribute</th>
-            <th rowspan="2">Long-<br>Context</th>
-          </tr>
-          <tr><th>One-Hop</th><th>Multi-Hop</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>MMLongBench-Doc (2024)</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
-          <tr><td>M<sup>3</sup>DocVQA (2025)</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10003;</td></tr>
-          <tr><td>UniDoc-Bench (2025)</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td></tr>
-          <tr><td>M<sup>3</sup>VQA (2026)</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td></tr>
-          <tr class="ours"><td>DEAR (Ours)</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tbl-note">DEAR is the only benchmark supporting all evaluation dimensions at once: multi-hop reasoning,
-      dense-attribute understanding, and long-context reasoning.</p>
 
     <h3 style="text-align:center">Construction pipeline</h3>
     <figure>
